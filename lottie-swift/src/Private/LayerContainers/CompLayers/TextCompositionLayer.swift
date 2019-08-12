@@ -88,6 +88,13 @@ class TextCompositionLayer: CompositionLayer {
                                                             CGSize(width: CGFloat.greatestFiniteMagnitude,
                                                                    height: CGFloat.greatestFiniteMagnitude),
                                                             nil)
+    
+    var ascent:CGFloat = 0
+    var descent:CGFloat = 0
+    var leading:CGFloat = 0
+    let line = CTLineCreateWithAttributedString(attributedString)
+    CTLineGetTypographicBounds(line, &ascent, &descent, &leading)
+    
     switch text.justification {
     case .left:
       textLayer.anchorPoint = CGPoint(x: 0, y: 1)
@@ -99,7 +106,8 @@ class TextCompositionLayer: CompositionLayer {
     textLayer.opacity = Float(rootNode?.textOutputNode.opacity ?? 1)
     textLayer.transform = CATransform3DIdentity
     textLayer.frame = CGRect(origin: .zero, size: size)
-    textLayer.position = CGPoint.zero
+    textLayer.position = CGPoint(x:0,y:descent)
+//    textLayer.position = CGPoint.zero
     textLayer.transform = matrix
     textLayer.string = attributedString
   }
